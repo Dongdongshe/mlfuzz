@@ -29,6 +29,7 @@ from neuzzpp.utils import kill_fuzzer, replay_corpus
 
 
 def main(argv: Sequence[str] = tuple(sys.argv)) -> None:
+    #warmup_duration: int = 1 * 60  # 1 hour warmup with AFL
     warmup_duration: int = 60 * 60  # 1 hour warmup with AFL
     max_seed_length: int = 10000  # Limit seed input size for effective learning
     neuzz_duration: Optional[int] = None
@@ -59,11 +60,11 @@ def main(argv: Sequence[str] = tuple(sys.argv)) -> None:
         warmup_duration = min(args.duration, warmup_duration)
         neuzz_duration = max(0, args.duration - warmup_duration)  # Subtract warmup from total time
 
-    os.environ["AFL_NO_UI"] = "1"
+    #os.environ["AFL_NO_UI"] = "1"
     # Skip AFL's CPU frequency check (fails on Docker).
     os.environ["AFL_SKIP_CPUFREQ"] = "1"
     # No need to bind affinity to one core, Docker enforces 1 core usage.
-    os.environ["AFL_NO_AFFINITY"] = "1"
+    #os.environ["AFL_NO_AFFINITY"] = "1"
     # AFL will abort on startup if the core pattern sends notifications to
     # external programs. We don't care about this.
     os.environ["AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES"] = "1"
